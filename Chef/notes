@@ -1,0 +1,56 @@
+Chef
+====
+Programmatically provision.
+
+Server - hosted or in-house. Another option is AWS OpsWorks
+
+Terminology
+===========
+Organization: Chef server can have multiple tenant organizations.
+Each organization can represent business units or departments or so on.
+
+Environments: within each organization - Development, staging, production. 
+
+Nodes: Represent servers (hosts in ansible)
+Each node belongs one environment.
+
+Roles : types of nodes - db server, VPN server, app server etc
+Include run list: list of chef config files to be applied,
+    and data attributes: IPs ports etc
+
+Chef-client : runs on each node, configures node according to policy set by chef server
+
+Resource : a piece of a system and its desired state. eg: package to be installed, service to be run. 
+These are building blocks of chef config. Included in recipes.
+
+
+Recipes: config files-describe resources and their desired state
+Recipes - playbooks in ansible
+They can install and config software components, manage files, deploy apps. Can depend on other recipes
+
+Recipe syntax
+-------------
+eg: Install and start nginx - recipe 1 (depends on apt)
+
+include_recipe 'apt'
+
+package 'nginx' do
+  action :install
+end
+
+service 'nginx' do
+  action [:enable, :start]
+end
+
+Cookbooks : Recipe collection
+Can have templates, files, custom resources etc. Code re-useand modularity. 
+
+Search : search for nodes with roles. find topology data - ip, hostname, fully qualified dns etc. query from chef server
+
+Config drift - when infrastructure requirement changes, change policies in server. Client pulls new policies and enforces it on nodes.
+
+Chef knife
+==========
+command line tool: interface btwn local chef files and chef server
+
+
