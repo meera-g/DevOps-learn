@@ -1,3 +1,4 @@
 /Vagrant/knife-demo/chefdk_1.2.22-1_amd64.deb
 /Vagrant/.vagrant/machines/*
-
+/Vagrant/knife-demo/.vagrant/*
+/Vagrant/chef-demo1/.vagrant/*
