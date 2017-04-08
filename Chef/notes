@@ -53,4 +53,40 @@ Chef knife
 ==========
 command line tool: interface btwn local chef files and chef server
 
+Setting up : using new vagrant file start an ubuntu trusty workstation(chef-demo). ssh into it
+Install Chef dev toolkit : download from chef.io and save in vagrant folder. Install in workstation with dpkg -i as root
 
+Set up Knife: 
+create .chef dir in home folder and in it, to a file knife.rb add cookbook_path['home/vagrant/cookbooks']
+
+Creating a cookbook:
+Cookbook dir structure in the workstation:
+ mkdir cookbooks
+ cd cookbooks
+ chef generate cookbook my_cookbook
+
+In my_cookbook/recipes/metadata.rb : write script to install nginx and run it. Also change html/index.html file for nginx to display 'hello world'
+
+To apply the recipe:
+  sudo chef-client -z --runlist 'recipe[my_cookbook]'
+
+But first resolve dependencies and Package recipe:
+To download dependencies, initialize berks file form my_cookbook dir:
+  berks init #deprecated use chef generate cookbook instead
+  echo 'cookbook "apt"' >> Berksfile
+  BERKSHELF_PATH=~/cookbooks berks install
+
+To package all cookbooks for distribution:
+  berks vendor
+  ls berks-cookbooks/
+
+  mv berks-cookbooks/apt ~/cookbooks 
+#this is the path we mentioned in knife.rb file as cookbook_path
+
+Now that apt is resolved, run:
+  sudo chef-client -z --runlist 'recipe[my_cookbook]'
+
+This will install and start nginx. To verify 
+  curl localhost
+
+We should be able to see the 'Hello World'
